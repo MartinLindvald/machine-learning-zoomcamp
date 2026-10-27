@@ -185,6 +185,16 @@ for r in [0, 0.01, 0.1, 1, 5, 10, 100]:
 # r = 0 is the best with rmse = 2.2053
 
 # %% Q5 - random selection seed impact
+"""
+We used seed 42 for splitting the data. Let's find out how selecting the seed influences our score.
+Try different seed values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].
+For each seed, do the train/validation/test split with 60%/20%/20% distribution.
+Fill the missing values with 0 and train a model without regularization.
+For each seed, evaluate the model on the validation dataset and collect the RMSE scores.
+What's the standard deviation of all the scores? To compute the standard deviation, use np.std.
+Round the result to 3 decimal digits (round(std, 3))
+"""
+
 # Make a function to use for the different seed values
 
 def split_data(df, seed_num):
@@ -239,4 +249,25 @@ Combine train and validation datasets.
 Fill the missing values with 0 and train a model with r=0.001.
 What's the RMSE on the test dataset?
 """
+df_train, df_val, df_test, y_train, y_val, y_test = split_data(df_base, 9)
+
+# Concat df_train and df_val into df_full
+df_full = pd.concat([df_train, df_val]) # Concatenating dataframes
+y_full = np.concatenate([y_train, y_val]) # concatenating numpy arrays
+# Remake the index like before
+df_full = df_full.reset_index(drop=True)
+# make X_full
+X_full = prepare_X(df_full)
+
+# Calcualte bias and weights
+w0, w = train_lin_reg(X_full, y_full)
+
+# Ready to test the model
+X_test = prepare_X(df_test)
+
+y_pred = w0 + X_test.dot(w)
+
+score = round(rmse(y_test, y_pred), 3)
+print(f"Test RMSE score: {score}") # 2.236
+
 
