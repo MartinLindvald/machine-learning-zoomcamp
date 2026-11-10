@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mutual_info_score
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
+
 
 # %% Dataset
 
